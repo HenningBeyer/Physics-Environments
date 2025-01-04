@@ -1,0 +1,41 @@
+# ---Environment Configs---
+env_name: jumanji # Used for logging purposes and selection of the corresponding wrapper.
+observation_attribute : agent_inputs_global # which attribute of the current env observation the agent receives
+multi_agent : False
+
+scenario:
+  name: cart_n_pendulum-v1
+  task_name: cart_4_pendulum # For logging purposes.
+
+kwargs:
+  params:
+    _target_: physics_environments.envs.rl_pendulum.types.RLCartPendulumEnvironmentParams
+    physics_env_params:
+      _target_: physics_environments.envs.rl_pendulum.cart_pendulum_math.types.CartPendulumPhysicsEnvironmentParams
+      constants:
+        _target_: physics_environments.envs.rl_pendulum.cart_pendulum_math.types.CartPendulumPhysicsConstants
+        n    : 4
+        g    : 9.81
+        l    : [0.300, 0.300, 0.300, 0.300]  # Keep this list the same length as n!
+        r    : [0.200, 0.200, 0.200, 0.200]
+        m    : [0.800, 0.800, 0.800, 0.800]
+        I    : [0.011, 0.011, 0.011, 0.011]
+        mu   : [0.015, 0.015, 0.015, 0.015]
+
+    training_generator_type     : DefaultGenerator  # Literal["DefaultGenerator", "UniformGenerator"]
+    dt                          : 0.010
+    t_episode                   : 10.00
+    max_cart_acceleration       : 25.00
+    cart_width                  : 0.250
+    track_width                 : 1.250
+    reward_exponent             : 1.0
+
+
+
+# Defines the metric that will be used to evaluate the performance of the agent.
+# This metric is returned at the end of an experiment and can be used for hyperparameter tuning.
+eval_metric: episode_return
+
+# optional - defines the threshold that needs to be reached in order to consider the environment solved.
+# if present then solve rate will be logged.
+solved_return_threshold: 500.0
